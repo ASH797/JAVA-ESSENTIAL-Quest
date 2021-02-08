@@ -1,0 +1,81 @@
+Consider a rat placed at (0, 0) in a square matrix of order N*N.
+It has to reach the destination at (N-1, N-1). Find all possible paths that the rat can take to reach from source to destination.
+The directions in which the rat can move are 'U'(up), 'D'(down), 'L' (left), 'R' (right).
+Value 0 at a cell in the matrix represents that it is blocked and cannot be crossed while value 1 at a cell in the matrix represents that it can be traveled through.
+//code
+// Initial Template for Java
+
+import java.util.*;
+class Rat {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+
+        while (t-- > 0) {
+            int n = sc.nextInt();
+            int[][] a = new int[n][n];
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++) a[i][j] = sc.nextInt();
+
+            GfG g = new GfG();
+            ArrayList<String> res = g.findPath(a, n);
+            if (res.size() > 0) {
+                for (int i = 0; i < res.size(); i++)
+                    System.out.print(res.get(i) + " ");
+                System.out.println();
+            } else {
+                System.out.println(-1);
+            }
+        }
+    }
+}
+// } Driver Code Ends
+
+
+// User function Template for Java
+
+// m is the given matrix and n is the order of matrix
+class GfG {
+    static ArrayList<String> sol=new ArrayList<String>();
+    public static ArrayList<String> findPath(int[][] m, int n) {
+        // Your code here
+       sol.clear();
+        int v[][]=new int[n][n];
+        int r,c,x=n-1,y=n-1;
+        r=0;
+        c=0;
+        if(m[x][y]==0)
+        {
+            sol.add("-1");
+            return sol;
+        }
+        String s="";
+        findPathUtil(r,c,m,v,n,s,n-1,n-1);
+        
+        Collections.sort(sol);
+        return sol;
+        
+    }
+    static void findPathUtil(int r,int c,int m[][],int v[][],int n,String s,int x,int y)
+    {
+        
+        if(r==n-1&&c==n-1)
+        {
+            sol.add(s);
+            return;
+        }
+        if(r>n-1||c>n-1||r<0||c<0||m[r][c]==0||v[r][c]==1)
+        {
+            
+            return;
+        }
+        
+        v[r][c]=1;
+        findPathUtil(r,c+1,m,v,n,s+"R",x,y);
+        findPathUtil(r,c-1,m,v,n,s+"L",x,y);
+        findPathUtil(r+1,c,m,v,n,s+"D",x,y);
+        findPathUtil(r-1,c,m,v,n,s+"U",x,y);
+        v[r][c]=0;
+    }
+    
+}
